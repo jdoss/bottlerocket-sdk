@@ -214,6 +214,8 @@ RUN make install
 RUN \
   install -p -m 0644 -Dt ${SYSROOT}/usr/share/licenses/musl COPYRIGHT
 
+ARG ARCH
+ARG TARGET="${ARCH}-bottlerocket-linux-musl"
 ARG LLVMVER="9.0.0"
 
 USER builder
@@ -476,7 +478,7 @@ RUN \
   ln -sr /${ARCH}-bottlerocket-linux-musl/sys-root/usr/share/licenses /usr/share/licenses/bottlerocket-sdk-musl
 
 # Reset permissions for `builder`.
-RUN chown builder:builder -R /home/builder
+RUN mkdir /home/builder/{tmp,src} && chown builder:builder -R /home/builder
 
 USER builder
 RUN rpmdev-setuptree
